@@ -5,6 +5,7 @@ use collisioneer::{stats::FpsCounterPlugin, sweep, Collider, CollisionEntity};
 const CHARACTER_WIDTH: f32 = 1.0; // chonker
 const CHARACTER_HEIGHT: f32 = 1.7;
 const CHARACTER_OVERCLIP: f32 = 0.001;
+const MAX_SLOPE: f32 = 0.7;
 
 fn main() {
     App::new()
@@ -350,18 +351,16 @@ impl Character {
         let detect_ground_at = anticipated_position;
 
         if let Some(intersection) = sweep::sweep_intersection_against(
-            &parry3d::shape::Cylinder::new(0.01, CHARACTER_WIDTH * 0.5), // The shape used for detection
+            &parry3d::shape::Cylinder::new(0.01, CHARACTER_WIDTH * 0.5),
             detect_ground_at,
             Vec3::Y * -step_up_height,
             colliders,
         ) {
-            // Check if the ground normal indicates a mostly upward-facing surface
-            if intersection.their_normal.dot(Vec3::Y) > 0.7 {
+            if intersection.their_normal.dot(Vec3::Y) > MAX_SLOPE {
                 self.grounded = true;
-                // If grounded, adjust the character's position to snap to the ground, considering step_up_height
                 transform.translation.y =
                     intersection.their_contact_point.y + CHARACTER_HEIGHT * 0.5 + 0.01;
-                self.velocity.y = 0.0; // Reset vertical velocity
+                self.velocity.y = 0.0;
             }
         } else {
             self.grounded = false;
