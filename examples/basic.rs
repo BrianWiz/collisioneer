@@ -375,6 +375,8 @@ impl Character {
         colliders: &Vec<CollisionEntity>,
     ) {
         let mut dt = time.delta_seconds();
+
+        // we loop 4 times because you may collide with multiple objects in a single frame
         for _ in 0..4 {
             if let Some(intersection) = sweep::sweep_intersection_against(
                 collider.shape.as_ref(),
