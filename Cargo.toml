@@ -1,0 +1,15 @@
+[package]
+name = "collisioneer"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy = "0.13.2"
+bevy_panorbit_camera = "0.17.0"
+nalgebra = "0.32.5"
+parry3d = { version = "0.13.7", features = ["std"] }
+
+[dev-dependencies]
+bevy_panorbit_camera = "0.17.0"
